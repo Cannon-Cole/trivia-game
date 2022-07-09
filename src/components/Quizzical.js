@@ -17,7 +17,17 @@ function Quizzical() {
 
   const [game_data, set_game_data] = React.useState([]);
   const [question_components, set_questions] = React.useState([]);
-  const [game_state, set_game_state] = React.useState(states.new);
+  const [game_state, set_game_state] = React.useState(states.playing);
+  const [fetch_data, set_fetch_data] = React.useState(true);
+
+  React.useEffect(() => {
+    fetch("https://opentdb.com/api.php?amount=5&difficulty=easy")
+      .then((res) => res.json())
+      .then((data) => {
+        data = data.results.map((x) => ({ ...x, id: nanoid() }));
+        init_questions(data);
+      });
+  }, [fetch_data]);
 
   function answer_selected(question, answer) {
     let new_game_data = [];
@@ -82,22 +92,28 @@ function Quizzical() {
     build_questions();
   }
 
-  React.useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=5&difficulty=easy")
-      .then((res) => res.json())
-      .then((data) => {
-        data = data.results.map((x) => ({ ...x, id: nanoid() }));
-        init_questions(data);
-      });
-  }, []);
-
-  function build_page() {
-    if (game_state === states.new) {
-      return question_components.push(<Start key={nanoid()} />);
-    }
+  function score() {
+    set_game_state(states.finished);
+    return "";
   }
 
-  return <main>{build_page()}</main>;
+  function play_again() {
+    set_game_state(states.playing);
+    set_fetch_data((value) => !value);
+  }
+
+  return (
+    <main>
+      {game_state === states.new ? <Start /> : null}
+      {game_state === states.playing ? question_components : null}
+      {game_state === states.playing ? (
+        <button onClick={score}>Score</button>
+      ) : null}
+      {game_state === states.finished ? (
+        <button onClick={play_again}>Play Again</button>
+      ) : null}
+    </main>
+  );
 }
 
 export default Quizzical;

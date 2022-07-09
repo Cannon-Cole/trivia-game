@@ -3,7 +3,6 @@ function Question(props) {
   let styles = "quiz-button";
 
   function select_style(answer) {
-    answer = answer[0];
     console.log(answer, "---", props.correct);
     if (answer === props.chosen && props.game_state === "playing") {
       return " chosen";
