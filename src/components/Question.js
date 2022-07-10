@@ -1,9 +1,7 @@
 function Question(props) {
   let pressed = props.selected_answer;
-  let styles = "quiz-button";
 
   function select_style(answer) {
-    console.log(answer, "---", props.correct);
     if (answer === props.chosen && props.game_state === "playing") {
       return " chosen";
     } else if (answer === props.correct && props.game_state === "finished") {
