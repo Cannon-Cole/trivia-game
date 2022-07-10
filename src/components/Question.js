@@ -24,6 +24,7 @@ function Question(props) {
         {props.answers.map((answer) => (
           <button
             key={answer}
+            disabled={props.game_state === "finished" ? "true" : null}
             className={"quiz-button" + select_style(answer)}
             onClick={() => pressed(props.question, answer)}
           >

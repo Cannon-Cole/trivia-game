@@ -107,21 +107,31 @@ function Quizzical() {
   }
 
   return (
-    <main>
+    <main className="middle">
       {console.log(question_components)}
       {game_state === states.new ? (
         <StartScreen start_game={start_game} />
       ) : null}
+
       {game_state !== states.new ? question_components : null}
-      {game_state === states.playing ? (
-        <button onClick={() => score()}>Score</button>
-      ) : null}
+      <div className="horizontal">
+        {game_state === states.playing ? (
+          <button
+            className="utility-button upper-spacing"
+            onClick={() => score()}
+          >
+            Score
+          </button>
+        ) : null}
+      </div>
       {game_state === states.finished ? (
-        <div>
-          <p>
+        <div className="horizontal upper-spacing">
+          <p className="right-spacing">
             You scored {get_num_correct()} out of {game_data.length}
           </p>
-          <button onClick={() => start_game()}>Play Again</button>
+          <button className="utility-button" onClick={() => start_game()}>
+            Play Again
+          </button>
         </div>
       ) : null}
     </main>
